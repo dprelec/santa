@@ -1,4 +1,4 @@
-(ns mm.core)
+(ns mmxx.core)
 
 (defn =2020 [n] (= (:sum n) 2020))
 
