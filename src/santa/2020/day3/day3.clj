@@ -17,9 +17,8 @@
 
 (defn char-is-tree? [c] (= c \#))
 
-(defn indices 
-  [rows cols step] 
-  (into [] (map dec (take rows (take-nth step (take (* rows rows) (cycle (range 1 (inc cols)))))))))
+(defn indices [rows cols step] 
+  (map dec (take rows (take-nth step (cycle (range 1 (inc cols)))))))
 
 (defn count-trees [input step-right step-down]
   (loop [rows (take-nth step-down input)
