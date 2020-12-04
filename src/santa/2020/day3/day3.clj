@@ -1,7 +1,5 @@
 (ns santa.2020.day3)
 
-(require '[clojure.string :refer [join]])
-
 (def test-input-3-1
   [
 "..##......."
@@ -17,24 +15,26 @@
 ".#..#...#.#"
 ])
 
-(defn is-tree? [c] (= c \#))
-
-(defn input->vec [input] (map vec input))
+(defn char-is-tree? [c] (= c \#))
 
 (defn indices 
-  [rows cols] 
-  (into [] (map #(- % 1) (take rows (take-nth 3 (take (* rows rows) (flatten (repeat (range 1 (+ cols 1))))))))))
+  [rows cols step] 
+  (into [] (map dec (take rows (take-nth step (take (* rows rows) (cycle (range 1 (inc cols)))))))))
 
-(defn count-trees [input]
-  (let [idxs (indices (count input) (count (first input)))]
-    (loop [rows (input->vec input) idxs idxs trees 0]
+(defn count-trees [input step-right step-down]
+  (loop [rows (take-nth step-down input)
+         idxs (indices (count input) (count (first input)) step-right)
+         trees 0]
       (if-not (seq rows)
         trees
         (let [idx (first idxs) row (first rows)]
-          (if (is-tree? (row idx))
-            (recur (rest rows) (rest idxs) (+ trees 1))
-            (recur (rest rows) (rest idxs) trees)))))))
+          (if (char-is-tree? ((vec row) idx))
+            (recur (rest rows) (rest idxs) (inc trees))
+            (recur (rest rows) (rest idxs) trees))))))
 
-(println (count-trees test-input-3-1))
-
-
+(println 
+  (time (apply * [(count-trees test-input-3-1 3 1)
+                  (count-trees test-input-3-1 1 1)
+                  (count-trees test-input-3-1 5 1)
+                  (count-trees test-input-3-1 7 1)
+                  (count-trees test-input-3-1 1 2)])))
