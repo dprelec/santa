@@ -12,7 +12,7 @@
 (defn binary->decimal [b] (Integer/parseInt b 2))
 
 (defn direction->decimal [d]
-  (binary->decimal (apply str (map #(letter->bin %) d))))
+  (binary->decimal (apply str (map letter->bin d))))
 
 (defn direction->row-id [d]
   (let [p (parse-path d)
