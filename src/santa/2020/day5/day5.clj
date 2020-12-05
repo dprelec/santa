@@ -20,6 +20,7 @@
         c (direction->decimal (:col p))]
     (+ (* 8 r) c)))
 
+;; solution to part 1
 (defn highest-seat-id [input]
   (first (sort #(compare %2 %1) (map direction->row-id input))))
 
@@ -30,3 +31,8 @@
    "FBFBBFFRLR"])
 
 (println (time (highest-seat-id test-input)))
+
+;; solution to part 2
+(defn find-missing-seat [input]
+  (let [nums (map direction->row-id input)]
+    (filter #(> (:d %) 1) (for [pair (partition 2 (rest nums))] {:d (- (second pair) (first pair)) :p pair}))))
