@@ -34,7 +34,7 @@
 
 ;; solution to part 1
 (println (traverse (parse-lines->map "test-input") #{"shiny gold"}))
-(println (traverse (parse-lines->map "input-2020-7") #{"shiny gold"}))
+(println (traverse (parse-lines->map "input") #{"shiny gold"}))
 
 (defn parse-color-line [line]
   (let [parts (split line #" bags contain ")
@@ -53,4 +53,4 @@
 
 ;; solution to part 2
 (println (count-bags (parse-lines->colormap "test-input") "shiny gold"))
-(println (count-bags (parse-lines->colormap "input-2020-7") "shiny gold"))
+(println (count-bags (parse-lines->colormap "input") "shiny gold"))

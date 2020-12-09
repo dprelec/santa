@@ -20,7 +20,7 @@
       (count s)))))
 
 ;; solution to part 1
-(println (count-sums (input->lines "input-2020-6")))
+(println (count-sums (input->lines "input")))
 
 (defn strings->map [strings]
   (loop [strings strings m {}]
@@ -39,4 +39,4 @@
   (for [l lines] (count-answers l)))
 
 ;; solution to part 2
-(println (total-answers (input->lines "input-2020-6")))
+(println (total-answers (input->lines "input")))
