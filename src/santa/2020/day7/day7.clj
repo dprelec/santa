@@ -35,3 +35,22 @@
 ;; solution to part 1
 (println (traverse (parse-lines->map "test-input") #{"shiny gold"}))
 (println (traverse (parse-lines->map "input-2020-7") #{"shiny gold"}))
+
+(defn parse-color-line [line]
+  (let [parts (split line #" bags contain ")
+        bags (remove nil? (map parse-bag (split (second parts) #", ")))]
+    (if (seq bags)
+      {(first parts) (into {} bags)})))
+
+(defn parse-lines->colormap [input-file]
+  (into {} (remove nil? (map parse-color-line (split-lines (slurp input-file))))))
+
+(defn count-bags [colormap color]
+  (let [nodes (colormap color)]
+    (if-not (seq nodes)
+      0
+      (apply + (for [kv nodes] (+ (val kv) (* (val kv) (count-bags colormap (key kv)))))))))
+
+;; solution to part 2
+(println (count-bags (parse-lines->colormap "test-input") "shiny gold"))
+(println (count-bags (parse-lines->colormap "input-2020-7") "shiny gold"))
