@@ -30,3 +30,5 @@
 (println (execute-program (input->program "test-input")))
 (println (execute-program (input->program "input")))
 
+;; solution to part 2: done manually :)
+;; see graph.dot
