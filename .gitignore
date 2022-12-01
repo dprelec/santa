@@ -1,3 +1,9 @@
 .lein-failures
 .lein-repl-history
 target/
+.rebel_readline_history
+input*
+test-input*
+.clj-kondo
+.hgignore
+.lsp
