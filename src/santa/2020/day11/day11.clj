@@ -1,8 +1,6 @@
 (ns santa.2020.day11
   (:require [clojure.string :refer [split-lines split]]))
 
-(require '[clojure.pprint :as pp])
-
 (def floor \.)
 (def empty-seat \L)
 (def occupied-seat \#)
@@ -38,7 +36,7 @@
 
 (defn occupy-seat [a b i j]
   (aset b i j (aget a i j))
-  (if (not (floor? (aget a i j)))
+  (when (not (floor? (aget a i j)))
     (let [n (count-neighbours a i j)]
       (if (and (seat-empty? (aget a i j)) (zero? n))
         (aset b i j occupied-seat)
@@ -49,7 +47,7 @@
   (let [b (make-array Character/TYPE (rows a) (cols a))
         c (for [i (range (rows a)) j (range (cols a))] [i j])]
     (loop [c c]
-      (if (seq c)
+      (when (seq c)
         (let [[i j] (first c)]
           (occupy-seat a b i j)
           (recur (rest c)))))
@@ -57,7 +55,7 @@
 
 (defn differences [a b]
   (remove nil? (for [i (range (rows a)) j (range (cols a))]
-                   (if (not= (aget a i j) (aget b i j))
+                   (when (not= (aget a i j) (aget b i j))
                      {:i i :j j}))))
 
 (defn count-seats [a]

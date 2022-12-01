@@ -31,7 +31,6 @@
   ;; map with combination map
   ;; multiply all
   (let [pairs (partition 2 1 chain)
-        diffs (map diff-pair pairs)
         grouped (partition-by identity (map diff-pair pairs))
         ones (filter #(= (first %) 1) grouped)
         combs (map #(cm (inc (count %))) ones)]

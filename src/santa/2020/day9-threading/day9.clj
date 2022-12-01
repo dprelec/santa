@@ -1,12 +1,22 @@
 (ns day9
-  (:require [clojure.string :refer [split-lines]]))
+ (:require [clojure.string :refer [split-lines]]))
 
-(defn input->vec [input-file]
+(defn input->vec 
+  "Return input lines as vector."
+  [input-file] 
   (into [] (map read-string (split-lines (slurp input-file)))))
 
-(defn sum-all [nums] (into #{} (for [x nums y nums :while (not= x y)] (+ x y))))
+(defn sum-all [numbers] (into #{} (for [x numbers y numbers :while (not= x y)] (+ x y))))
 
-(defn partition-window [input w] (filter #(= w (count %)) (partition-all w 1 input)))
+(defn count-eq? 
+  "Build function that checks if the given collection is of size `n`."
+  [n]
+  (fn [collection] n (count collection)))
+
+(defn partition-window [input w] 
+  (filter (count-eq? w) 
+          (->> input 
+               (partition-all w 1))))
 
 (defn first-non-summed [numbers window-size]
   ;; 1) partition all numbers into sliding-window sublists
@@ -25,12 +35,13 @@
 
 
 (defn find-weaknes [input dest-sum max-window]
-  (first (flatten (remove empty?
-                          (for [w (range 2 max-window)]
-                            (filter #(= (:sum %) dest-sum)
-                                    (map (fn [c] {:sum (apply + c) :res (+ (apply min c) (apply max c))})
-                                         (partition-window input w))))))))
+  (first (flatten (remove empty? 
+          (for [w (range 2 max-window)] 
+            (filter #(= (:sum %) dest-sum)
+                   (map (fn [c] {:sum (apply + c) :res (+ (apply min c) (apply max c))})
+                        (partition-window input w))))))))
 
 ;; solution to part 2
 ;; max-window value discovered by accident
 (println (:res (find-weaknes (input->vec "input") 23278925 20)))
+

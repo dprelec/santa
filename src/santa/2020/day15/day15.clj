@@ -1,6 +1,7 @@
 (ns santa.2020.day15
  (:require [clojure.string :refer [split-lines split]]))
 
+;; parse-input
 (defn parse-input [input] (into [] (map read-string (split input #","))))
 
 (defn init-idx [input]
