@@ -13,49 +13,48 @@
 (defn space? [c] (= c \space))
 
 (defn top [crates]
-  (into [] (for [k (sort (keys crates))]
-             (last (crates k)))))
+  (for [k (sort (keys crates))]
+    (last (crates k))))
 
 (defn solution-part-1 [crates moves]
-    (loop [moves moves crates crates]
-      (if-not (seq moves)
-        (join "" (top crates))
-        (let [;; parse move lines
-              move (split (first moves) #" ")
-              ;; amount is integer
-              amount (read-string (nth move 1))
-              ;; from and to are string keys of crates
-              from (nth move 3)
-              to (nth move 5)
-              ;; source crates to be moved
-              payload (take amount (reverse (crates from)))
-              new-crate (concat (crates to) payload)
-              old-crate (take (- (count (crates from)) amount) (crates from))
-              ;; modify crates 
-              crates (assoc crates to new-crate)
-              crates (assoc crates from old-crate)]
-          (recur (rest moves) crates)))))
+  (loop [moves moves crates crates]
+    (if-not (seq moves)
+      (join "" (top crates))
+      (let [;; parse move lines
+            move (split (first moves) #" ")
+            ;; amount is integer
+            amount (read-string (nth move 1))
+            ;; from and to are string keys of crates
+            from (nth move 3)
+            to (nth move 5)
+            payload (split-at (- (count (crates from)) amount) (crates from))
+            ;; source crates to be moved
+            new-crate (concat (crates to) (reverse (first (rest payload))))
+            old-crate (first payload)
+            ;; modify crates 
+            crates (assoc crates to new-crate)
+            crates (assoc crates from old-crate)]
+        (recur (rest moves) crates)))))
 
 (defn solution-part-2 [crates moves]
-    (loop [moves moves crates crates]
-      (if-not (seq moves)
-        (join "" (top crates))
-        (let [;; parse move lines
-              move (split (first moves) #" ")
-              ;; amount is integer
-              amount (read-string (nth move 1))
-              ;; from and to are string keys of crates
-              from (nth move 3)
-              to (nth move 5)
-              ;; source crates to be moved
-              ;; double reverse to preserve order!
-              payload (take amount (reverse (crates from)))
-              new-crate (concat (crates to) (reverse payload))
-              old-crate (take (- (count (crates from)) amount) (crates from))
-              ;; modify crates 
-              crates (assoc crates to new-crate)
-              crates (assoc crates from old-crate)]
-          (recur (rest moves) crates)))))
+  (loop [moves moves crates crates]
+    (if-not (seq moves)
+      (join "" (top crates))
+      (let [;; parse move lines
+            move (split (first moves) #" ")
+            ;; amount is integer
+            amount (read-string (nth move 1))
+            ;; from and to are string keys of crates
+            from (nth move 3)
+            to (nth move 5)
+            ;; source crates to be moved
+            payload (split-at (- (count (crates from)) amount) (crates from))
+            new-crate (concat (crates to) (first (rest payload)))
+            old-crate (first payload)
+            ;; modify crates 
+            crates (assoc crates to new-crate)
+            crates (assoc crates from old-crate)]
+        (recur (rest moves) crates)))))
 
 (defn parse-crate-moves [input]
   (let [;; split config in two parts
@@ -67,7 +66,7 @@
         ;; clean-up crate lines
         crates (map #(remove space? %) crates)
         ;; convert to map {"crate_numer" [stack]}
-        crates (merge (into {} (for [crate crates] {(str (first crate)) (rest crate)})))
+        crates (into {} (for [crate crates] {(str (first crate)) (rest crate)}))
         moves (first (rest (rest config)))]
     [crates moves]))
 
