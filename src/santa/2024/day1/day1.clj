@@ -15,30 +15,24 @@
 (defn solve1 [input-file]
   (let [input (->> input-file
                    input->matrix
-                   ;; sort rows 
                    (mapv sort)
                    ;; convert into pairs
                    (apply map vector))
-        ;; calculate difference
         diffs (map pair-diff input)
-        ;; sum all
         sum (apply + diffs)]
-    (println sum)))
+    sum))
 
-(solve1 "test-input")
-(solve1 "input")
+(println "Test 1:" (solve1 "test-input"))
+(println "Solution 1:" (solve1 "input"))
 
 (defn solve2 [input-file]
   (let [input (->> input-file
-                   input->vec
-                   (map #(map read-string (re-seq #"\d+" %)))
-                   transpose)
+                   input->matrix )
         left (first input)
         right (frequencies (second input))
         score (map #(* % (right % 0)) left)
         sum (apply + score)]
-    (println sum)))
+    sum))
 
-
-(solve2 "test-input")
-(solve2 "input")
+(println "Test 2:" (solve2 "test-input"))
+(println "Solution 2:" (solve2 "input"))
